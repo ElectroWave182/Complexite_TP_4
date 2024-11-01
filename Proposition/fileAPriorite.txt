@@ -1,0 +1,6 @@
+1)
+La complexité de l'ajout d'une nouvelle tâche est logarithmique, par rapport à la taille de la file.
+Cela est dû à la stratégie "diviser pour régner" solicitée dans l'algorithme de dichotomie.
+
+2)
+Elle est constante, à condition que la file soit bien ficellée.

@@ -1,0 +1,184 @@
+1)
+
+Le niveau k comporte 2^k nœuds.
+
+
+2)
+
+2^k - 1 clefs peuvent y être mémorisées, dont au moins 2^(k - 1) le seront.
+
+
+3)
+
+Soit un arbre de hauteur h ayant n clefs.
+D'après 2), 2^(h - 1) <= n <= 2^h - 1
+i.e. 		2^(h - 1) <= n < 2^h
+i.e. 		h - 1 <= log2 (n) < h
+
+log2 (n) est compris entre 2 entiers consécutifs h - 1 et h.
+Donc, h - 1 = |_ log2 (n) _|
+i.e.  h = |_ log2 (n) _| + 1
+
+
+4)
+
+i a pour fils gauche 2i + 1 et pour fils droit 2i + 2.
+
+
+5)
+
+Soit i le père de j.
+
+Cas n° 1 : j est fils gauche de i
+----------
+
+	  j = 2i + 1
+donc, i = (j - 1) / 2
+donc, i = |_ (j - 1) / 2 _|
+
+Cas n° 2 : j est fils droit de i
+----------
+
+	  j = 2i + 2
+donc, i = (j - 2) / 2
+donc, i = |_ (j - 2) / 2 _|
+donc, i = |_ (j - 2) / 2 + 1 / 2_|
+donc, i = |_ (j - 2 + 1) / 2 _|
+donc, i = |_ (j - 1) / 2 _|
+
+Ainsi, par disjonction de cas, i = |_ (j - 1) / 2 _|
+
+
+6)
+
+Soit r la racine de l'arbre et n ≠ r.
+
+D'après les caractéristiques du tas-max,
+n ≠ r, donc n a un père m et n <= m.
+
+Pour tout nœud k parent de n,
+k est la racine ou k a un père k' et k <= k'.
+
+Ainsi, par récurrence sur la transitivité de la relation d'infériorité, n <= r.
+r est alors une borne supérieure de l'ensemble des autres clefs de l'arbre.
+
+
+7)
+
+Elle est constante.
+
+
+8)
+
+Fonction entasser (aAjouter)
+|	
+Debut
+|	
+|	
+|	tasMax.nbClefs ← tasMax.nbClefs + 1
+|	taille ← tasMax.nbClefs
+|	
+|	Si taille = 0 ou aAjouter > tasMax.racine faire
+|	|	
+|	|	aAjouter.filsGauche ← tasMax.racine
+|	|	tasMax.racine ← aAjouter
+|	|	
+|	|	
+|	Sinon faire
+|	|	
+|	|	directions ← []
+|	|	hauteur ← 1
+|	|	noeud ← tasMax.racine
+|	|		
+|	|	
+|	|	Tant que taille ≠ 1 faire
+|	|	|
+|	|	|	quotient ← |_ taille / 2 _|
+|	|	|	reste ← 2 * (taille / 2 - quotient)
+|	|	|
+|	|	|	directions.ajouter (reste)
+|	|	|	hauteur ← hauteur + 1
+|	|	|	taille ← quotient
+|	|	|
+|	|	Fin Tant que.
+|	|	
+|	|	
+|	|	Pour couche allant de hauteur à 1 faire
+|	|	|	
+|	|	|	
+|	|	|	Si aAjouter > noeud.filsGauche ou noeud.filsGauche = nul faire
+|	|	|	|	
+|	|	|	|	aAjouter.filsGauche ← noeud.filsGauche
+|	|	|	|	noeud.filsGauche ← aAjouter
+|	|	|	|	Retourner
+|	|	|	|	
+|	|	|	|	
+|	|	|	Sinon si aAjouter > noeud.filsDroit ou noeud.filsDroit = nul faire
+|	|	|	|	
+|	|	|	|	aAjouter.filsDroit ← noeud.filsDroit
+|	|	|	|	noeud.filsDroit ← aAjouter
+|	|	|	|	Retourner
+|	|	|	|	
+|	|	|	|	
+|	|	|	Fin Si.
+|	|	|	
+|	|	|	
+|	|	|	direction ← directions[couche]
+|	|	|	
+|	|	|	Si direction = 0 faire
+|	|	|	|	noeud ← noeud.filsGauche
+|	|	|	|	
+|	|	|	Sinon si direction = 1 faire
+|	|	|	|	noeud ← noeud.filsDroit
+|	|	|	|	
+|	|	|	Fin Si.
+|	|	|	
+|	|	|	
+|	|	Fin Pour.
+|	|	
+|	|	
+|	Fin Si.
+|	
+|	
+Fin
+
+Complexité temporelle : logarithmique
+Complexité spatiale : logarithmique
+
+
+9)
+
+Oh patron, je suis con.
+
+Complexité temporelle : logarithmique
+Complexité spatiale : constante
+
+
+10)
+
+Fonction trier ()
+|	
+Debut
+|	
+|	
+|	tasDeTri ← nouveau tasMax
+|	
+|	Pour element dans listeContigue faire
+|	|	tasDeTri.entasser (element)
+|	|	listeContigue.enlever
+|	|	
+|	Fin Pour.
+|	
+|	Pour curseur allant de 1 à tasDeTri.nbClefs faire
+|	|	listeContigue.ajouter (tasDeTri.racine)
+|	|	tasDeTri.retirer
+|	|	
+|	Fin Pour.
+|
+|	Retourner
+|	
+|	
+Fin
+
+Complexité temporelle : linéarithmique
+Complexité spatiale : linéaire
